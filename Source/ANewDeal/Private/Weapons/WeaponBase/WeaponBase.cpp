@@ -8,7 +8,7 @@
 #include "JsonUtilities.h"
 
 // Sets default values
-AWeaponBase::AWeaponBase() : ShotgunPellets(6), Range(4'500), SpreadAngle(8.89F), bHasHitOccured(false), bCanShotgunFireOrReload(false), EjectQuat(FQuat(0.F)), FireQuat(FQuat(0.F)), 
+AWeaponBase::AWeaponBase() : ShotgunPellets(6), Range(4'500), SpreadAngle(8.89F), bHasHitOccured(false), bCanShotgunFireOrReload(false), bIsUsingEB(false), EjectQuat(FQuat(0.F)), FireQuat(FQuat(0.F)), 
 	IconFilePath("")
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -95,7 +95,11 @@ void AWeaponBase::WeaponFire(EWeaponFireType CurrentType, TObjectPtr<UAnimInstan
 
 		}
 
-		SpawnProjectile();
+		if (bIsUsingEB)
+			EBProjectile();
+
+		else
+			SpawnProjectile();
 
 		break;
 
@@ -367,3 +371,5 @@ void AWeaponBase::StopFire() {}
 void AWeaponBase::ShotgunReloadStart() {}
 
 void AWeaponBase::SpawnProjectile() {}
+
+void AWeaponBase::EBProjectile() {}

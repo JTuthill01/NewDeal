@@ -1,5 +1,6 @@
 #include "Weapons/SVD/SVD.h"
 #include "Projectiles/ProjectileBase.h"
+#include "EBBarrel.h"
 
 ASVD::ASVD()
 {
@@ -12,6 +13,11 @@ ASVD::ASVD()
 	FireTransform = WeaponMesh->GetSocketTransform("Fire_FX_Slot");
 
 	FireQuat = FireTransform.GetRotation();
+
+	bIsUsingEB = true;
+
+	BarrelComp = CreateDefaultSubobject<UEBBarrel>(L"Barrel Component");
+	BarrelComp->SetupAttachment(WeaponMesh, FName("Fire_FX_Slot"));
 }
 
 void ASVD::SpawnProjectile()
@@ -22,4 +28,20 @@ void ASVD::SpawnProjectile()
 	Parms.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
 	CurrentProjectile = GetWorld()->SpawnActor<AProjectileBase>(Projectile, FireTransform, Parms);
+}
+
+void ASVD::EBProjectile()
+{
+	Super::EBProjectile();
+
+	if (IsValid(BarrelComp))
+		BarrelComp->Shoot(true);
+}
+
+void ASVD::StopFire()
+{
+	Super::StopFire();
+
+	if (IsValid(BarrelComp))
+		BarrelComp->Shoot(false);
 }

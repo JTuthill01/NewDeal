@@ -118,7 +118,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	void StopFire();
+	virtual void StopFire();
 
 	void WeaponFire();
 
@@ -134,12 +134,14 @@ public:
 
 	bool IsWeaponFiringOrReloading(TObjectPtr<UAnimInstance>InInstance, TObjectPtr<UAnimMontage> InMontage);
 
+protected:
+	void WeaponParser(FString InObjectID);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	void WeaponParser(FString InObjectID);
+	virtual void EBProjectile();
 
 	virtual void ShotgunReloadStart();
 
@@ -200,6 +202,7 @@ protected:
 
 	bool bHasHitOccured;
 	bool bCanShotgunFireOrReload;
+	bool bIsUsingEB;
 
 	FQuat EjectQuat;
 	FTransform EjectTransform;
